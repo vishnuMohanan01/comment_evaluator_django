@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from scipy.special import softmax
@@ -9,6 +10,7 @@ from scipy.special import softmax
 import evaluator_api.utils.load_eval_model
 
 
+@api_view(['POST'])
 def evaluate_text(req):
     if req.method == 'POST':
         evaluator = evaluator_api.utils.load_eval_model.get_text_eval_model()
