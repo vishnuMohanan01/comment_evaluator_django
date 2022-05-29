@@ -40,7 +40,7 @@ def evaluate_image(req):
         tokenizer = evaluator["tokenizer"]
         model = evaluator["model"]
 
-        img = req.FILE("image")
+        img = req.FILES("image")
         reader = easyocr.Reader(['en'])
         results = reader.readtext(img)
         text = ''
