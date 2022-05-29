@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from scipy.special import softmax
-import easyocr
+import pytesseract
+from PIL import Image
 
 
 # Create your views here.
@@ -48,13 +49,11 @@ def evaluate_image(req):
         uploaded_file_url = fs.url(filename)
         print("uploaded URL: ", uploaded_file_url)
 
-        reader = easyocr.Reader(['en'])
         file_path = os.getcwd() + uploaded_file_url
         print("File Path: " + file_path)
-        results = reader.readtext(file_path)
-        text = ''
-        for result in results:
-            text += result[1] + ' '
+
+        text = pytesseract.image_to_string(Image.open(file_path))
+        text.replace('\n', ' ').replace('\r', ' ')
 
         encoded_input = tokenizer(text, return_tensors='pt')
         output = model(**encoded_input)
