@@ -46,9 +46,12 @@ def evaluate_image(req):
         fs = FileSystemStorage()
         filename = fs.save(img.name, img)
         uploaded_file_url = fs.url(filename)
+        print("uploaded URL: uploaded_file_url")
 
         reader = easyocr.Reader(['en'])
-        results = reader.readtext(os.path.join(os.getcwd(), uploaded_file_url))
+        file_path = os.path.join(os.getcwd(), uploaded_file_url)
+        print("File Path: " + file_path)
+        results = reader.readtext(file_path)
         text = ''
         for result in results:
             text += result[1] + ' '
