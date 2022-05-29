@@ -53,7 +53,7 @@ def evaluate_image(req):
         print("File Path: " + file_path)
 
         text = pytesseract.image_to_string(Image.open(file_path))
-        text.replace('\n', ' ').replace('\r', ' ')
+        text = text.replace('\n', ' ').replace('\r', ' ')
 
         encoded_input = tokenizer(text, return_tensors='pt')
         output = model(**encoded_input)
