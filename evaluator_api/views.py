@@ -61,6 +61,6 @@ def evaluate_image(req):
         scores = softmax(scores)
 
         if scores[0] > 0.5:
-            return Response({"status": "ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+            return Response({"status": "ok", "comment": text}, status=status.HTTP_200_OK)
         else:
-            return Response({"status": "not ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+            return Response({"status": "not ok", "comment": text}, status=status.HTTP_200_OK)
