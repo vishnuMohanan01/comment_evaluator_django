@@ -49,7 +49,7 @@ def evaluate_image(req):
         print("uploaded URL: ", uploaded_file_url)
 
         reader = easyocr.Reader(['en'])
-        file_path = os.path.join(os.getcwd(), uploaded_file_url)
+        file_path = os.getcwd() + uploaded_file_url
         print("File Path: " + file_path)
         results = reader.readtext(file_path)
         text = ''
