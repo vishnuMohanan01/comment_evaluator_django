@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -41,8 +42,12 @@ def evaluate_image(req):
         model = evaluator["model"]
 
         img = req.FILES["image"]
+        fs = FileSystemStorage()
+        filename = fs.save(img.name, img)
+        uploaded_file_url = fs.url(filename)
+
         reader = easyocr.Reader(['en'])
-        results = reader.readtext(img)
+        results = reader.readtext(uploaded_file_url)
         text = ''
         for result in results:
             text += result[1] + ' '
