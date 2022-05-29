@@ -1,3 +1,4 @@
+import os
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
@@ -44,7 +45,7 @@ def evaluate_image(req):
         img = req.FILES["image"]
         fs = FileSystemStorage()
         filename = fs.save(img.name, img)
-        uploaded_file_url = fs.url(filename)
+        uploaded_file_url = fs.url(os.path.join(os.getcwd(), "/media", filename))
 
         reader = easyocr.Reader(['en'])
         results = reader.readtext(uploaded_file_url)
