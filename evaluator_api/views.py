@@ -29,11 +29,6 @@ def evaluate_text(req):
         scores = output[0][0].detach().numpy()
         scores = softmax(scores)
 
-        # if scores[0] > 0.5:
-        #     return Response({"status": "ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
-        # else:
-        #     return Response({"status": "not ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
-
         if 0.45 <= scores[0] <= 0.55:
             return Response({"status": "ok-not ok", "comment": req.POST.get("comment"), "rating": 3}, status=status.HTTP_200_OK)
 
