@@ -30,7 +30,7 @@ def evaluate_text(req):
         scores = softmax(scores)
 
         if 0.45 <= scores[0] <= 0.55:
-            return Response({"status": "ok-not ok", "comment": req.POST.get("comment"), "rating": 3}, status=status.HTTP_200_OK)
+            return Response({"status": "ok", "comment": req.POST.get("comment"), "rating": 3}, status=status.HTTP_200_OK)
 
         elif scores[0] > 0.55:
             """Not Offensive
@@ -79,7 +79,7 @@ def evaluate_image(req):
         scores = softmax(scores)
 
         if 0.45 <= scores[0] <= 0.55:
-            return Response({"status": "ok-not ok", "comment": text, "rating": 3}, status=status.HTTP_200_OK)
+            return Response({"status": "ok", "comment": text, "rating": 3}, status=status.HTTP_200_OK)
 
         elif scores[0] > 0.55:
             """Not Offensive
