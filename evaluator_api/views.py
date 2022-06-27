@@ -29,10 +29,33 @@ def evaluate_text(req):
         scores = output[0][0].detach().numpy()
         scores = softmax(scores)
 
-        if scores[0] > 0.5:
-            return Response({"status": "ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+        # if scores[0] > 0.5:
+        #     return Response({"status": "ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+        # else:
+        #     return Response({"status": "not ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+
+        if 0.45 <= scores[0] <= 0.55:
+            return Response({"status": "ok-not ok", "comment": req.POST.get("comment"), "rating": 3}, status=status.HTTP_200_OK)
+
+        elif scores[0] > 0.55:
+            """Not Offensive
+            get confidence value in scores[0] 
+            """
+
+            if scores[0] > 0.75:
+                return Response({"status": "ok", "comment": req.POST.get("comment"), "rating": 5}, status=status.HTTP_200_OK)
+            elif scores[0] < 0.75:
+                return Response({"status": "ok", "comment": req.POST.get("comment"), "rating": 4}, status=status.HTTP_200_OK)
+
         else:
-            return Response({"status": "not ok", "comment": req.POST.get("comment")}, status=status.HTTP_200_OK)
+            """Offensive
+            get confidence value in scores[1] 
+            """
+
+            if scores[1] > 0.75:
+                return Response({"status": "not ok", "comment": req.POST.get("comment"), "rating": 1}, status=status.HTTP_200_OK)
+            elif scores[1] < 0.75:
+                return Response({"status": "not ok", "comment": req.POST.get("comment"), "rating": 2}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -60,7 +83,25 @@ def evaluate_image(req):
         scores = output[0][0].detach().numpy()
         scores = softmax(scores)
 
-        if scores[0] > 0.5:
-            return Response({"status": "ok", "comment": text}, status=status.HTTP_200_OK)
+        if 0.45 <= scores[0] <= 0.55:
+            return Response({"status": "ok-not ok", "comment": text, "rating": 3}, status=status.HTTP_200_OK)
+
+        elif scores[0] > 0.55:
+            """Not Offensive
+            get confidence value in scores[0] 
+            """
+
+            if scores[0] > 0.75:
+                return Response({"status": "ok", "comment": text, "rating": 5}, status=status.HTTP_200_OK)
+            elif scores[0] < 0.75:
+                return Response({"status": "ok", "comment": text, "rating": 4}, status=status.HTTP_200_OK)
+
         else:
-            return Response({"status": "not ok", "comment": text}, status=status.HTTP_200_OK)
+            """Offensive
+            get confidence value in scores[1] 
+            """
+
+            if scores[1] > 0.75:
+                return Response({"status": "not ok", "comment": text, "rating": 1}, status=status.HTTP_200_OK)
+            elif scores[1] < 0.75:
+                return Response({"status": "not ok", "comment": text, "rating": 2}, status=status.HTTP_200_OK)
